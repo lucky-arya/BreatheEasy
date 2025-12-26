@@ -1,0 +1,30 @@
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Model files
+models/*.pkl
+models/*.joblib
+
+# Logs
+*.log
+logs/
+
+# Test cache
+.pytest_cache/
+.coverage
+htmlcov/

@@ -1,0 +1,67 @@
+# Render Blueprint - Deploy all services with one click
+# https://render.com/docs/blueprint-spec
+
+services:
+  # Frontend - React/Vite Static Site
+  - type: web
+    name: breatheeasy-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: breatheeasy-backend
+          property: url
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+  # Backend - Node.js/Express API
+  - type: web
+    name: breatheeasy-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        sync: false  # Set manually in Render dashboard
+      - key: OPENAQ_API_KEY
+        sync: false  # Set manually in Render dashboard
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ML_SERVICE_URL
+        fromService:
+          type: web
+          name: breatheeasy-ml
+          property: url
+      - key: FRONTEND_URL
+        fromService:
+          type: web
+          name: breatheeasy-frontend
+          property: url
+    healthCheckPath: /health
+
+  # ML Service - Python/FastAPI
+  - type: web
+    name: breatheeasy-ml
+    runtime: python
+    rootDir: ml-service
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11"
+    healthCheckPath: /health

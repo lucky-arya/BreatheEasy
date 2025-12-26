@@ -1,0 +1,61 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+*.local
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+*.egg-info/
+
+# ML Models
+ml-service/models/*.pkl
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage
+coverage/
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Editor/IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db
+*.dll
+*.exe
+
+# Docker
+docker-compose.override.yml
+
+# MongoDB data (when running locally)
+data/
+
+# Temp files
+*.tmp
+*.temp
+.cache/

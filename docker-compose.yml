@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  # Backend API Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: breatheeasy-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - MONGODB_URI=mongodb+srv://learningDB:shivam1234@cluster0.xm2akip.mongodb.net/breatheeasy?retryWrites=true&w=majority&appName=Cluster0
+      - ML_SERVICE_URL=http://ml-service:8000
+      - OPENAQ_API_KEY=${OPENAQ_API_KEY}
+      - JWT_SECRET=${JWT_SECRET}
+      - VAPID_PUBLIC_KEY=${VAPID_PUBLIC_KEY}
+      - VAPID_PRIVATE_KEY=${VAPID_PRIVATE_KEY}
+      - VAPID_SUBJECT=${VAPID_SUBJECT}
+      - CRON_ENABLED=true
+    depends_on:
+      ml-service:
+        condition: service_healthy
+    networks:
+      - breatheeasy-network
+    restart: unless-stopped
+
+  # ML Forecasting Service
+  ml-service:
+    build:
+      context: ./ml-service
+      dockerfile: Dockerfile
+    container_name: breatheeasy-ml
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGODB_URI=mongodb+srv://learningDB:shivam1234@cluster0.xm2akip.mongodb.net/breatheeasy?retryWrites=true&w=majority&appName=Cluster0
+      - PYTHONUNBUFFERED=1
+    networks:
+      - breatheeasy-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # Frontend React Application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:5000
+        - VITE_MAPBOX_TOKEN=${VITE_MAPBOX_TOKEN}
+    container_name: breatheeasy-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - breatheeasy-network
+    restart: unless-stopped
+
+networks:
+  breatheeasy-network:
+    driver: bridge
