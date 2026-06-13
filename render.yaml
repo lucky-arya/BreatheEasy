@@ -6,7 +6,6 @@ services:
   - type: web
     name: breatheeasy-frontend
     runtime: static
-    plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
