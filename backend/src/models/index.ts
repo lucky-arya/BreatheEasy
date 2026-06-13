@@ -1,6 +1,12 @@
-export { Location, ILocation } from './Location.js';
-export { Sensor, ISensor } from './Sensor.js';
-export { AQReading, IAQReading } from './AQReading.js';
-export { Prediction, IPrediction, IPredictionPoint } from './Prediction.js';
-export { User, IUser } from './User.js';
-export { Alert, IAlert } from './Alert.js';
+export { Location } from './Location.js';
+export type { ILocation } from './Location.js';
+export { Sensor } from './Sensor.js';
+export type { ISensor } from './Sensor.js';
+export { AQReading } from './AQReading.js';
+export type { IAQReading } from './AQReading.js';
+export { Prediction } from './Prediction.js';
+export type { IPrediction, IPredictionPoint } from './Prediction.js';
+export { User } from './User.js';
+export type { IUser } from './User.js';
+export { Alert } from './Alert.js';
+export type { IAlert } from './Alert.js';

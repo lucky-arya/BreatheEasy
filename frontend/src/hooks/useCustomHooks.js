@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 /**
  * Hook for auto-refreshing data
  */
-export function useAutoRefresh(fetchFn, intervalMs = 60000) {
+export function useAutoRefresh(fetchFn, intervalMs = 100000) {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
