@@ -112,12 +112,12 @@ docker-compose up --build
 docker-compose up -d --build
 ```
 
-### 3. Access the Application
+### 3. Access the Application (URLs may vary based on your setup)
 
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:5000
-- **ML Service**: http://localhost:8000
-- **MongoDB**: localhost:27017
+- **Frontend**: https://breatheeasy-frontend.onrender.com or http://localhost:3000
+- **Backend API**: https://breatheeasy-backend.onrender.com or http://localhost:5000
+- **ML Service**: https://breatheeasy-ml.onrender.com or http://localhost:8000
+- **MongoDB**: depends on your setup (use MongoDB Atlas or connect to localhost:27017)
 
 ## 🔧 Local Development
 
@@ -251,6 +251,25 @@ docker-compose up -d --build backend
 1. Use the Dockerfile
 2. Set environment variables
 3. Expose port 8000
+
+### Render (One-Click Blueprint)
+
+Render can deploy the whole stack (frontend, backend, ML service) from the included `render.yaml` Blueprint in the repository root.
+
+1. Push this repository to GitHub (or GitLab).
+2. In Render, choose **New + > Blueprint** and connect the repo. Use a unique name like `breatheeasy-aqi-predictor`.
+3. During creation Render will prompt for any `sync: false` env vars. Provide:
+  - `MONGODB_URI` (use a free MongoDB Atlas URI or self-hosted MongoDB)
+  - `OPENAQ_API_KEY`
+  - Any `VAPID_*` keys you need for push notifications
+4. The Blueprint wires service URLs automatically: `VITE_API_URL`, `ML_SERVICE_URL`, and `FRONTEND_URL` are preconfigured.
+5. All Render services in the Blueprint are configured to use free web instances. Note: free services may sleep when idle.
+
+Troubleshooting:
+- If the backend build fails on TypeScript typings, the repository already includes the fix: the Render build uses `npm ci --include=dev` and `tsc`.
+- You still need a working `MONGODB_URI`—Render does not provide a free MongoDB instance.
+
+If you want, I can add an `envVarGroup` with placeholder values to make the initial Blueprint creation smoother.
 
 ## 📝 License
 
