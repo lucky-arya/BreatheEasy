@@ -6,6 +6,7 @@ services:
   - type: web
     name: breatheeasy-frontend
     runtime: static
+    plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
@@ -25,6 +26,7 @@ services:
   - type: web
     name: breatheeasy-backend
     runtime: node
+    plan: free
     rootDir: backend
     buildCommand: npm install && npm run build
     startCommand: npm start
@@ -34,7 +36,7 @@ services:
       - key: PORT
         value: 5000
       - key: MONGODB_URI
-        sync: false  # Set manually in Render dashboard
+        sync: false  # Provide a free-tier MongoDB URI or self-hosted MongoDB URL
       - key: OPENAQ_API_KEY
         sync: false  # Set manually in Render dashboard
       - key: JWT_SECRET
@@ -51,6 +53,7 @@ services:
   - type: web
     name: breatheeasy-ml
     runtime: python
+    plan: free
     rootDir: ml-service
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
