@@ -11,7 +11,7 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
-        sync: false  # Set to https://breatheeasy-backend.onrender.com after deploy
+        value: https://breatheeasy-backend.onrender.com
     headers:
       - path: /*
         name: Cache-Control
@@ -39,10 +39,12 @@ services:
         sync: false  # Set manually in Render dashboard
       - key: JWT_SECRET
         generateValue: true
+      - key: INGEST_API_KEY
+        generateValue: true
       - key: ML_SERVICE_URL
-        sync: false  # Set to https://breatheeasy-ml.onrender.com after deploy
+        value: https://breatheeasy-ml.onrender.com
       - key: FRONTEND_URL
-        sync: false  # Set to https://breatheeasy-frontend.onrender.com after deploy
+        value: https://breatheeasy-frontend.onrender.com
     healthCheckPath: /health
 
   # ML Service - Python/FastAPI
