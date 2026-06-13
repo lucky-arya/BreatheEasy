@@ -4,15 +4,11 @@ import logger from './logger.js';
 
 const connectDB = async (): Promise<void> => {
   try {
-    const conn = await mongoose.connect(config.mongodbUri, {
-      maxPoolSize: 10,
-      serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 45000,
-    });
+    await mongoose.connect(config.mongodbUri);
 
-    logger.info(`MongoDB Connected: ${conn.connection.host}`);
+    logger.info(`MongoDB Connected: ${mongoose.connection.host}`);
 
-    mongoose.connection.on('error', (err) => {
+    mongoose.connection.on('error', (err: Error) => {
       logger.error('MongoDB connection error:', err);
     });
 
@@ -24,7 +20,7 @@ const connectDB = async (): Promise<void> => {
       logger.info('MongoDB reconnected');
     });
 
-  } catch (error) {
+  } catch (error: unknown) {
     logger.error('Error connecting to MongoDB:', error);
     process.exit(1);
   }
